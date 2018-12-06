@@ -31,7 +31,7 @@ class NavigationIconView {
     String title,
     Color color,
     TickerProvider vsync,
-  }) : _icon = icon,
+  })  : _icon = icon,
         _color = color,
         _title = title,
         item = BottomNavigationBarItem(
@@ -55,7 +55,8 @@ class NavigationIconView {
   final AnimationController controller;
   Animation<double> _animation;
 
-  FadeTransition transition(BottomNavigationBarType type, BuildContext context) {
+  FadeTransition transition(
+      BottomNavigationBarType type, BuildContext context) {
     Color iconColor;
     if (type == BottomNavigationBarType.shifting) {
       iconColor = _color;
@@ -113,8 +114,7 @@ class CustomInactiveIcon extends StatelessWidget {
         height: iconTheme.size - 8.0,
         decoration: BoxDecoration(
           border: Border.all(color: iconTheme.color, width: 2.0),
-        )
-    );
+        ));
   }
 }
 
@@ -137,34 +137,25 @@ class _BottomNavigationDemoState extends State<Main>
     _navigationViews = <NavigationIconView>[
       NavigationIconView(
         icon: const Icon(Icons.person),
-        title: 'Profile',
-        color: Colors.teal,
-        vsync: this,
-      ),
-      NavigationIconView(
-        activeIcon: CustomIcon(),
-        icon: CustomInactiveIcon(),
-        title: 'Box',
+        title: 'Biography',
         color: Colors.deepOrange,
         vsync: this,
       ),
       NavigationIconView(
-        activeIcon: const Icon(Icons.cloud),
-        icon: const Icon(Icons.cloud_queue),
-        title: 'Cloud',
+        icon: const Icon(Icons.build),
+        title: 'Skills',
         color: Colors.deepPurple,
         vsync: this,
       ),
       NavigationIconView(
-        activeIcon: const Icon(Icons.favorite),
-        icon: const Icon(Icons.favorite_border),
-        title: 'Favorites',
-        color: Colors.indigo,
+        icon: const Icon(Icons.star),
+        title: 'Achievements',
+        color: Colors.teal,
         vsync: this,
       ),
       NavigationIconView(
-        icon: const Icon(Icons.event_available),
-        title: 'Event',
+        icon: const Icon(Icons.info),
+        title: 'About',
         color: Colors.pink,
         vsync: this,
       )
@@ -178,8 +169,7 @@ class _BottomNavigationDemoState extends State<Main>
 
   @override
   void dispose() {
-    for (NavigationIconView view in _navigationViews)
-      view.controller.dispose();
+    for (NavigationIconView view in _navigationViews) view.controller.dispose();
     super.dispose();
   }
 
@@ -211,7 +201,8 @@ class _BottomNavigationDemoState extends State<Main>
   Widget build(BuildContext context) {
     final BottomNavigationBar botNavBar = BottomNavigationBar(
       items: _navigationViews
-          .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
+          .map<BottomNavigationBarItem>(
+              (NavigationIconView navigationView) => navigationView.item)
           .toList(),
       currentIndex: _currentIndex,
       type: _type,
@@ -234,22 +225,21 @@ class _BottomNavigationDemoState extends State<Main>
                 _type = value;
               });
             },
-            itemBuilder: (BuildContext context) => <PopupMenuItem<BottomNavigationBarType>>[
-              const PopupMenuItem<BottomNavigationBarType>(
-                value: BottomNavigationBarType.fixed,
-                child: Text('Fixed'),
-              ),
-              const PopupMenuItem<BottomNavigationBarType>(
-                value: BottomNavigationBarType.shifting,
-                child: Text('Shifting'),
-              )
-            ],
+            itemBuilder: (BuildContext context) =>
+                <PopupMenuItem<BottomNavigationBarType>>[
+                  const PopupMenuItem<BottomNavigationBarType>(
+                    value: BottomNavigationBarType.fixed,
+                    child: Text('Fixed'),
+                  ),
+                  const PopupMenuItem<BottomNavigationBarType>(
+                    value: BottomNavigationBarType.shifting,
+                    child: Text('Shifting'),
+                  )
+                ],
           )
         ],
       ),
-      body: Center(
-          child: _buildTransitionsStack()
-      ),
+      body: Center(child: _buildTransitionsStack()),
       bottomNavigationBar: botNavBar,
     );
   }
