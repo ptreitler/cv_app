@@ -217,7 +217,7 @@ class _BottomNavigationDemoState extends State<Main>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bottom navigation'),
+        title: const Text('Peter Treitler'),
         actions: <Widget>[
           PopupMenuButton<BottomNavigationBarType>(
             onSelected: (BottomNavigationBarType value) {
