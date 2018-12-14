@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
+import 'biography.dart';
+import 'skills.dart';
+import 'achievements.dart';
+import 'info.dart';
 
 void main() => runApp(new CVApp());
 
 class CVApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'CV App',
       theme: new ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: Main(),
@@ -122,14 +117,20 @@ class Main extends StatefulWidget {
   static const String routeName = '/material/bottom_navigation';
 
   @override
-  _BottomNavigationDemoState createState() => _BottomNavigationDemoState();
+  _CVAppState createState() => _CVAppState();
 }
 
-class _BottomNavigationDemoState extends State<Main>
-    with TickerProviderStateMixin {
+class _CVAppState extends State<Main> with TickerProviderStateMixin {
   int _currentIndex = 0;
   BottomNavigationBarType _type = BottomNavigationBarType.shifting;
   List<NavigationIconView> _navigationViews;
+
+  final List<StatelessWidget> _children = [
+    BiographyWidget(),
+    SkillsWidget(),
+    AchievementsWidget(),
+    InfoWidget()
+  ];
 
   @override
   void initState() {
@@ -161,9 +162,9 @@ class _BottomNavigationDemoState extends State<Main>
       )
     ];
 
-    for (NavigationIconView view in _navigationViews)
+    for (NavigationIconView view in _navigationViews) {
       view.controller.addListener(_rebuild);
-
+    }
     _navigationViews[_currentIndex].controller.value = 1.0;
   }
 
@@ -179,27 +180,9 @@ class _BottomNavigationDemoState extends State<Main>
     });
   }
 
-  Widget _buildTransitionsStack() {
-    final List<FadeTransition> transitions = <FadeTransition>[];
-
-    for (NavigationIconView view in _navigationViews)
-      transitions.add(view.transition(_type, context));
-
-    // We want to have the newly animating (fading in) views on top.
-    transitions.sort((FadeTransition a, FadeTransition b) {
-      final Animation<double> aAnimation = a.opacity;
-      final Animation<double> bAnimation = b.opacity;
-      final double aValue = aAnimation.value;
-      final double bValue = bAnimation.value;
-      return aValue.compareTo(bValue);
-    });
-
-    return Stack(children: transitions);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final BottomNavigationBar botNavBar = BottomNavigationBar(
+    final BottomNavigationBar bottomNavigationBar = BottomNavigationBar(
       items: _navigationViews
           .map<BottomNavigationBarItem>(
               (NavigationIconView navigationView) => navigationView.item)
@@ -239,8 +222,8 @@ class _BottomNavigationDemoState extends State<Main>
           )
         ],
       ),
-      body: Center(child: _buildTransitionsStack()),
-      bottomNavigationBar: botNavBar,
+      body: _children[_currentIndex],
+      bottomNavigationBar: bottomNavigationBar,
     );
   }
 }
